@@ -115,10 +115,11 @@ module BackCover() {
     // 1. 後蓋主體
     RoundedBox(outer_w, outer_h, back_depth, corner_radius);
 
-    // 2. 內部挖空 (擴大以容納 Bambu CMYK LED Board 120x156mm)
+    // 2. 內部挖空 (修改為完全直角，確保 90 度的 Bambu CMYK LED 板能平放)
     translate([0, 0, 2]) // 保留 2mm 底板厚度
-      // 挖空至卡扣下方，不破壞卡扣結構
-      RoundedBox(led_w, led_h, back_depth - 5, corner_radius - 1);
+      // 使用直角挖空，取代原本會干涉尖角的 RoundedBox
+      translate([-led_w / 2, -led_h / 2, 0])
+        cube([led_w, led_h, back_depth - 5]);
 
     // 為了讓前框卡扣能正常咬合，保留頂部 (z = 25~30) 的支撐內壁
     translate([0, 0, back_depth - 5.01])
